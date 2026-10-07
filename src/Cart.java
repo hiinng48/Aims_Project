@@ -24,10 +24,11 @@ public class Cart {
             }
         }
         if (index != -1) {
-            for (int i = index; i < quantityOrdered; ++ i)
+            for (int i = index; i < quantityOrdered - 1; ++ i)
                 itemsOrdered[i] = itemsOrdered[i + 1];
             itemsOrdered[quantityOrdered - 1] = null;
             -- this.quantityOrdered;
+            System.out.println("The disc has been removed successfully.");
         } else {
             System.out.println("The disc does not exist.");
         }
