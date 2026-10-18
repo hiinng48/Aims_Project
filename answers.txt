@@ -1,0 +1,23 @@
+Lab 3 – Answers
+
+Mục 1: Overload mảng vs varargs trong Cart
+
+Khai báo cả addDigitalVideoDisc(DigitalVideoDisc[] dvdList) và addDigitalVideoDisc(DigitalVideoDisc... dvds) thì javac báo lỗi: name clash ... have the same erasure. Lý do: varargs chỉ là cú pháp rút gọn, sau khi biên dịch DigitalVideoDisc... thành DigitalVideoDisc[], nên hai method trùng chữ ký.
+Varargs: gọi linh hoạt (0, 1, nhiều đối số, hoặc truyền luôn mảng), nhưng khi truyền đối số rời thì JVM tạo mảng ngầm và phải đứng cuối danh sách tham số.
+Mảng: tường minh, nhưng muốn thêm vài đĩa lẻ phải tự tạo mảng (new DigitalVideoDisc[]{dvd1, dvd2}).
+Chọn varargs, vì nó nhận được cả mảng lẫn đối số rời nên bao trùm luôn cách dùng mảng.
+
+Mục 2: Truyền tham số
+
+Java luôn là pass-by-value. Với đối tượng, giá trị được truyền là bản sao của tham chiếu.
+swap(jungleDVD, cinderellaDVD): hàm chỉ hoán đổi hai biến cục bộ o1, o2, còn biến ở main vẫn trỏ vào đối tượng cũ nên title không đổi.
+changeTitle(jungleDVD, ...): dvd.setTitle(title) sửa trực tiếp đối tượng trên heap, nên title của jungleDVD đổi thành “Cinderella”. Dòng dvd = new DigitalVideoDisc(oldTitle) sau đó chỉ đổi biến cục bộ, không ảnh hưởng main.
+Muốn hoán đổi thật: swap các field bên trong hai đối tượng, hoặc đặt chúng trong mảng/wrapper rồi hoán đổi phần tử trong đó.
+
+Mục 7: String, StringBuilder, StringBuffer
+
+- Nối chuỗi 65,536 lần:	~1131 ms (Dùng +);	~1 ms (StringBuilder);	~2 ms (StringBuffer)
+- Đọc và nối file 100,000 bytes:	~2438 ms (GarbageCreator, Dùng +)	~4 ms (NoGarbage, StringBuilder)
+String bất biến: mỗi lần + tạo một String mới, copy toàn bộ chuỗi cũ và bỏ chuỗi cũ thành rác. Tổng chi phí O(N²) và GC phải chạy liên tục nên rất chậm.
+StringBuilder/StringBuffer dùng mảng ký tự tự giãn, append chỉ ghi thêm vào cuối (tổng O(N)), không sinh đối tượng trung gian.
+StringBuffer có synchronized nên thread-safe nhưng tốn thêm chi phí lock. StringBuilder không đồng bộ nên nhanh nhất, dùng khi chạy đơn luồng.
