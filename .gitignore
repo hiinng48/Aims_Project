@@ -1,2 +1,4 @@
 *.pdf
 *.class
+bin/
+OtherProjects/bin/
